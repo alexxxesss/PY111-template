@@ -30,5 +30,12 @@ def sinx(x: Union[int, float]) -> float:
     :param x: x value
     :return: sin(x) value
     """
-    print(x)
-    return 0
+
+    sin_x = 0
+    delta = 0.0001
+    for n in itertools.count(0, 1):
+        sin_x_n = (((-1) ** n) / math.factorial((2 * n) + 1)) * (x ** ((2 * n) + 1))
+        sin_x += sin_x_n
+        if abs(sin_x_n) < delta:
+            break
+    return sin_x
