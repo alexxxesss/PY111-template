@@ -13,8 +13,10 @@ def min_search(arr: Sequence) -> int:
     """
 
     min_value = arr[0]
-    for value in arr:
+    index_min_value = 0
+    for index, value in enumerate(arr):
         if value < min_value:
             min_value = value
+            index_min_value = index
 
-    return arr.index(min_value)
+    return index_min_value
