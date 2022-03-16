@@ -9,7 +9,37 @@ from typing import Any, Optional, Tuple
 
 class BinarySearchTree:
     def __init__(self):
-        ...
+        """
+        Example:
+        {
+            "key": 8,
+            "value": 8,
+            "left": {
+                "key": 3,
+                "value": 3,
+                "left": left,
+                "right": right
+            },
+            "right": {
+                "key": 10,
+                "value": 10,
+                "left": None,
+                "right": None
+            }
+        }
+
+        """
+        self.root = None
+
+    @staticmethod
+    def _create_node(key, value, left=None, right=None) -> dict:
+        """ Фабричный метод """
+        return {
+            "key": key,
+            "value": value,
+            "left": left,
+            "right": right
+        }
 
     def insert(self, key: int, value: Any) -> None:
         """
@@ -19,8 +49,27 @@ class BinarySearchTree:
         :param value: value associated with key
         :return: None
         """
-        print(key, value)
-        return None
+        if self.root is None:
+            self.root = self._create_node(key, value)
+        else:
+            current_node = self.root
+            current_key = current_node["key"]
+
+            while True:
+                if key > current_key:                    # уходим вправо
+                    if current_node["right"] is None:
+                        current_node["right"] = self._create_node(key, value)
+                        break
+                    else:
+                        current_node = current_node["right"]
+                        current_key = current_node["key"]
+                else:                                    # уходим влево
+                    if current_node["left"] is None:
+                        current_node["left"] = self._create_node(key, value)
+                        break
+                    else:
+                        current_node = current_node["left"]
+                        current_key = current_node["key"]
 
     def remove(self, key: int) -> Optional[Tuple[int, Any]]:
         """
@@ -39,8 +88,22 @@ class BinarySearchTree:
         :param key: key for search in the BST
         :return: value associated with the corresponding key
         """
-        print(key)
-        return None
+        def _find(current_node):
+            if current_node is None:
+                raise KeyError('Нет такого значения в дереве')
+            if current_node["key"] == key:
+                return current_node["value"]
+
+            current_key = current_node["key"]
+            # next_node = current_node["right"] if key > current_key current_node["left"]
+            # _find(next_node)
+            if key > current_key:
+                return _find(current_node["right"])  # вправо
+            else:
+                return _find(current_node["left"])   # влево
+
+        return _find(self.root)
+
 
     def clear(self) -> None:
         """
@@ -48,4 +111,4 @@ class BinarySearchTree:
 
         :return: None
         """
-        return None
+        self.root.clear()
